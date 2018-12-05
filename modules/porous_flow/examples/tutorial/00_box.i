@@ -1,0 +1,82 @@
+# Creates the mesh for the remainder of the tutorial
+# [Mesh]
+#   type = AnnularMesh
+#   dim = 2
+#   nr = 10
+#   rmin = 1.0
+#   rmax = 10
+#   growth_r = 1.4
+#   nt = 4
+#   tmin = 0
+#   tmax = 1.57079632679
+# []
+
+[Mesh]
+  type = GeneratedMesh # Can generate simple lines, rectangles and rectangular prisms
+  dim = 2 # Dimension of the mesh
+  nx = 10 # Number of elements in the x direction
+  ny = 10 # Number of elements in the y direction
+  xmax = 10  # Length of test chamber
+  ymax = 10  # Test chamber radius
+[]
+
+[MeshModifiers]
+  [./make3D]
+    type = MeshExtruder
+    extrusion_vector = '0 0 12'
+    num_layers = 12
+    bottom_sideset = 'bottom'
+    top_sideset = 'top'
+  [../]
+  [./shift_down]
+    type = Transform
+    transform = TRANSLATE
+    vector_value = '0 0 -6'
+    depends_on = make3D
+  [../]
+  [./aquifer]
+    type = SubdomainBoundingBox
+    block_id = 1
+    bottom_left = '0 0 -2'
+    top_right = '10 10 2'
+    depends_on = shift_down
+  [../]
+  [./injection_area]
+    type = ParsedAddSideset
+    combinatorial_geometry = 'x<0.01'
+    included_subdomain_ids = 1
+    new_sideset_name = 'injection_area'
+    depends_on = 'aquifer'
+  [../]
+  [./rename]
+    type = RenameBlock
+    old_block_id = '0 1'
+    new_block_name = 'caps aquifer'
+    depends_on = 'injection_area'
+  [../]
+[]
+
+[Variables]
+  [./dummy_var]
+  [../]
+[]
+[Kernels]
+  [./dummy_diffusion]
+    type = Diffusion
+    variable = dummy_var
+  [../]
+[]
+
+[Executioner]
+  type = Steady
+[]
+
+# [Outputs]
+#   file_base = 3D_mesh
+#   exodus = true
+# []
+
+[Outputs]
+  file_base = 3D_mesh
+  exodus = true
+[]
