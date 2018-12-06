@@ -111,6 +111,54 @@
   [../]
 []
 
+[AuxVariables]
+  [./porosity]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./permeability_x]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./permeability_xy]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+  [./permeability_y]
+    family = MONOMIAL
+    order = CONSTANT
+  [../]
+[]
+
+[AuxKernels]
+  [./porosity]
+    type = MaterialRealAux
+    property = PorousFlow_porosity_qp
+    variable = porosity
+  [../]
+  [./permeability_x]
+    type = MaterialRealTensorValueAux
+    property = PorousFlow_permeability_qp
+    column = 0
+    row = 0
+    variable = permeability_x
+  [../]
+  [./permeability_xy]
+    type = MaterialRealTensorValueAux
+    property = PorousFlow_permeability_qp
+    column = 0
+    row = 1
+    variable = permeability_xy
+  [../]
+  [./permeability_y]
+    type = MaterialRealTensorValueAux
+    property = PorousFlow_permeability_qp
+    column = 0
+    row = 0
+    variable = permeability_y
+  [../]
+[]
+
 [Preconditioning]
   active = basic
   [./basic]
