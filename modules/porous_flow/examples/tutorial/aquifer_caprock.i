@@ -38,22 +38,11 @@
   [../]
 []
 
-[Variables]
-  [./dummy_var]
-  [../]
-[]
-
-[Kernels]
-  [./dummy_diffusion]
-    type = Diffusion
-    variable = dummy_var
-  [../]
-[]
-
 [GlobalParams]
   PorousFlowDictator = dictator
 []
 
+## Tells it to solve for porepressure
 [Variables]
   [./porepressure]
   [../]
