@@ -1,5 +1,5 @@
 # state file generated using paraview version 5.6.0
-final_fig = True #one figure or whole animation
+
 # ----------------------------------------------------------------
 # setup views used in the visualization
 # ----------------------------------------------------------------
@@ -23,9 +23,9 @@ renderView1.ViewSize = [708, 1097]
 renderView1.AxesGrid = 'GridAxes3DActor'
 renderView1.CenterOfRotation = [5.0, 5.0, -3.0]
 renderView1.StereoType = 0
-renderView1.CameraPosition = [-10.249872004214323, -35.751717562017554, 8.772337134925865]
-renderView1.CameraFocalPoint = [5.000000000000004, 5.000000000000004, -2.9999999999999982]
-renderView1.CameraViewUp = [-0.03124585512162705, 0.2881703597078228, 0.9570692453127843]
+renderView1.CameraPosition = [5.0, -40.076035784191674, -3.0]
+renderView1.CameraFocalPoint = [5.0, 5.0, -3.0]
+renderView1.CameraViewUp = [0.0, 0.0, 1.0]
 renderView1.CameraParallelScale = 11.901436278830314
 renderView1.Background = [0.32, 0.34, 0.43]
 renderView1.OSPRayMaterialLibrary = materialLibrary1
@@ -48,9 +48,7 @@ SetActiveView(renderView1)
 # ----------------------------------------------------------------
 
 # create a new 'ExodusIIReader'
-# fname = '/Users/danielb/projects/moose/modules/porous_flow/examples/tutorial/01_box_out.e'
-fname = '/Users/danielb/projects/moose/modules/porous_flow/examples/tutorial/01_box_3d_mesh_out.e'
-a01_box_oute = ExodusIIReader(FileName=[fname])
+a01_box_oute = ExodusIIReader(FileName=['/Users/danielb/projects/moose/modules/porous_flow/examples/tutorial/01_box_out.e'])
 a01_box_oute.ElementVariables = ['darcy_vel_']
 a01_box_oute.PointVariables = ['porepressure']
 a01_box_oute.NodeSetArrayStatus = []
@@ -75,7 +73,7 @@ porepressurePWF.Points = [-28425.919019840854, 0.0, 0.5, 0.0, 1000000.0, 1.0, 0.
 porepressurePWF.ScalarRangeInitialized = 1
 
 # trace defaults for the display properties.
-a01_box_outeDisplay.Representation = 'Surface'
+a01_box_outeDisplay.Representation = 'Surface With Edges'
 a01_box_outeDisplay.ColorArrayName = ['POINTS', 'porepressure']
 a01_box_outeDisplay.LookupTable = porepressureLUT
 a01_box_outeDisplay.OSPRayScaleArray = 'GlobalNodeId'
@@ -112,25 +110,6 @@ a01_box_outeDisplay.PolarAxes.SecondaryRadialAxesTextFontFile = ''
 
 # setup the color legend parameters for each legend in this view
 
-# get color transfer function/color map for 'vtkBlockColors'
-vtkBlockColorsLUT = GetColorTransferFunction('vtkBlockColors')
-vtkBlockColorsLUT.InterpretValuesAsCategories = 1
-vtkBlockColorsLUT.AnnotationsInitialized = 1
-vtkBlockColorsLUT.Annotations = ['0', '0', '1', '1', '2', '2', '3', '3', '4', '4', '5', '5', '6', '6', '7', '7', '8', '8', '9', '9', '10', '10', '11', '11']
-vtkBlockColorsLUT.ActiveAnnotatedValues = ['0', '1']
-vtkBlockColorsLUT.IndexedColors = [1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.6299992370489051, 0.6299992370489051, 1.0, 0.6699931334401464, 0.5000076295109483, 0.3300068665598535, 1.0, 0.5000076295109483, 0.7499961852445258, 0.5300068665598535, 0.3499961852445258, 0.7000076295109483, 1.0, 0.7499961852445258, 0.5000076295109483]
-vtkBlockColorsLUT.IndexedOpacities = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-
-# get color legend/bar for vtkBlockColorsLUT in view renderView1
-vtkBlockColorsLUTColorBar = GetScalarBar(vtkBlockColorsLUT, renderView1)
-vtkBlockColorsLUTColorBar.Title = 'vtkBlockColors'
-vtkBlockColorsLUTColorBar.ComponentTitle = ''
-vtkBlockColorsLUTColorBar.TitleFontFile = ''
-vtkBlockColorsLUTColorBar.LabelFontFile = ''
-
-# set color bar visibility
-vtkBlockColorsLUTColorBar.Visibility = 0
-
 # get color legend/bar for porepressureLUT in view renderView1
 porepressureLUTColorBar = GetScalarBar(porepressureLUT, renderView1)
 porepressureLUTColorBar.Title = 'porepressure'
@@ -141,21 +120,6 @@ porepressureLUTColorBar.LabelFontFile = ''
 # set color bar visibility
 porepressureLUTColorBar.Visibility = 1
 
-# get color transfer function/color map for 'darcy_vel_'
-darcy_vel_LUT = GetColorTransferFunction('darcy_vel_')
-darcy_vel_LUT.RGBPoints = [4.508029113965096e-16, 0.231373, 0.298039, 0.752941, 1.3448382564205572e-08, 0.865003, 0.865003, 0.865003, 2.6896764677608233e-08, 0.705882, 0.0156863, 0.14902]
-darcy_vel_LUT.ScalarRangeInitialized = 1.0
-
-# get color legend/bar for darcy_vel_LUT in view renderView1
-darcy_vel_LUTColorBar = GetScalarBar(darcy_vel_LUT, renderView1)
-darcy_vel_LUTColorBar.Title = 'darcy_vel_'
-darcy_vel_LUTColorBar.ComponentTitle = 'Magnitude'
-darcy_vel_LUTColorBar.TitleFontFile = ''
-darcy_vel_LUTColorBar.LabelFontFile = ''
-
-# set color bar visibility
-darcy_vel_LUTColorBar.Visibility = 0
-
 # show color legend
 a01_box_outeDisplay.SetScalarBarVisibility(renderView1, True)
 
@@ -164,42 +128,8 @@ a01_box_outeDisplay.SetScalarBarVisibility(renderView1, True)
 # note: the Get..() functions create a new object, if needed
 # ----------------------------------------------------------------
 
-# get opacity transfer function/opacity map for 'darcy_vel_'
-darcy_vel_PWF = GetOpacityTransferFunction('darcy_vel_')
-darcy_vel_PWF.Points = [4.508029113965096e-16, 0.0, 0.5, 0.0, 2.6896764677608233e-08, 1.0, 0.5, 0.0]
-darcy_vel_PWF.ScalarRangeInitialized = 1
-
-# get opacity transfer function/opacity map for 'vtkBlockColors'
-vtkBlockColorsPWF = GetOpacityTransferFunction('vtkBlockColors')
-
-# Check the current view time
-view = GetActiveView()
-view.ViewTime
-reader = GetActiveSource()
-reader.TimestepValues
-tsteps = reader.TimestepValues
-# Lets be fancy and use a time annotation filter. This will show the
-# current time value of the reader as text in the corner of the view.
-annTime = AnnotateTimeFilter(reader)
-# Show the filter
-Show(annTime)
-
-#### Look at a few time steps. Note that the time value is requested not
-if final_fig:
-    view.ViewTime = tsteps[-1]
-    Render()
-    WriteImage('smooth_3d_final.png')
-else:
-    ### OR create an image of every time value
-    ntimesteps = len(tsteps)
-    for i in xrange(0,ntimesteps):
-        view.ViewTime = tsteps[i]
-        Render()
-        pngname = 'smooth_3d_'+str(i).zfill(4)+'.png'
-        WriteImage(pngname)
-
 # ----------------------------------------------------------------
 # finally, restore active source
 SetActiveSource(a01_box_oute)
 # ----------------------------------------------------------------
-
+WriteImage('pressure_slice_smooth.png')
