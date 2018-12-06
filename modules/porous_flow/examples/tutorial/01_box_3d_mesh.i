@@ -100,9 +100,9 @@
     type = PresetBC
     variable = porepressure
     value = 1E6
-    boundary = left
-    # boundary = top
-    # boundary = front
+    boundary = right # left #right
+    # boundary = bottom # top #bottom
+    # boundary = back #front
   [../]
   # [./outlet]
   #   type = PresetBC
