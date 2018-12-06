@@ -1,58 +1,5 @@
-# # Darcy flow
-# [Mesh]
-#   type = GeneratedMesh # Can generate simple lines, rectangles and rectangular prisms
-#   dim = 2 # Dimension of the mesh
-#   nx = 10 # Number of elements in the x direction
-#   ny = 10 # Number of elements in the y direction
-#   xmax = 10  # Length of test chamber
-#   ymax = 10  # Test chamber radius
-# []
-
-# [MeshModifiers]
-#   [./make3D]
-#     type = MeshExtruder
-#     extrusion_vector = '0 0 12'
-#     num_layers = 12
-#     bottom_sideset = 'bottom'
-#     top_sideset = 'top'
-#   [../]
-#   [./shift_down]
-#     type = Transform
-#     transform = TRANSLATE
-#     vector_value = '0 0 -6'
-#     depends_on = make3D
-#   [../]
-#   [./aquifer]
-#     type = SubdomainBoundingBox
-#     block_id = 1
-#     bottom_left = '0 0 -2'
-#     top_right = '10 10 2'
-#     depends_on = shift_down
-#   [../]
-#   [./injection_area]
-#     type = ParsedAddSideset
-#     combinatorial_geometry = 'x<0.01'
-#     included_subdomain_ids = 1
-#     new_sideset_name = 'injection_area'
-#     depends_on = 'aquifer'
-#   [../]
-#   [./rename]
-#     type = RenameBlock
-#     old_block_id = '0 1'
-#     new_block_name = 'caps aquifer'
-#     depends_on = 'injection_area'
-#   [../]
-# []
-
-# [MeshModifiers]
-#   [./aquifer]
-#     type = SubdomainBoundingBox
-#     block_id = 1
-#     bottom_left = '0 0 -2'
-#     top_right = '10 10 2'
-#   [../]
-# []
-
+# Example Input file for injecting into an aquifer (bottom) with a caprock above
+# Shows how to define a 3D mesh with block_ids for aquifer and caprock
 [Mesh]
   type = GeneratedMesh
   dim = 3
@@ -69,6 +16,7 @@
   block_name = 'aquifer caprock'
 []
 
+# Defines the aquifer and caprock regions as well as the injection_area
 [MeshModifiers]
   [./aquifer]
     type = SubdomainBoundingBox
@@ -81,6 +29,12 @@
     block_id = 3
     bottom_left = '0 5 0'
     top_right = '10 10 10'
+  [../]
+  [./injection_area]
+    type = BoundingBoxNodeSet
+    new_boundary = 'injection_area'
+    bottom_left = '0 0 5'
+    top_right = '0 5 5'
   [../]
 []
 
@@ -117,10 +71,12 @@
     type = PresetBC
     variable = porepressure
     value = 1E6
-    boundary = left #right
+    boundary = injection_area # injects just at the screened area
+    # boundary = left #right
     # boundary = bottom # top #bottom
     # boundary = back #front
   [../]
+  ### uncomment for an outlet BC is desired
   # [./outlet]
   #   type = PresetBC
   #   variable = porepressure
@@ -153,6 +109,7 @@
     solid_bulk_compliance = 2E-7
     fluid_bulk_modulus = 1E7
   [../]
+  ## Below shows how to assign different permeability to aquifer and caprock
   [./permeability_aquifer]
     type = PorousFlowPermeabilityConst
     block = aquifer
