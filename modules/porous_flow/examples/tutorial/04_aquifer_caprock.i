@@ -51,15 +51,15 @@
 [Mesh]
   type = GeneratedMesh
   dim = 3
-  nx = 10
+  nx = 20
   xmin = 0
-  xmax = 10
+  xmax = 100
   ny = 10
   ymin = 0
-  ymax = 10
-  nz = 10
+  ymax = 50
+  nz = 20
   zmin = 0
-  zmax = 10
+  zmax = 100
   block_id = '1 3'
   block_name = 'aquifer caps'
 []
@@ -70,19 +70,25 @@
     type = SubdomainBoundingBox
     block_id = 1
     bottom_left = '0 0 0'
-    top_right = '10 5 10'
+    top_right = '100 20 100'
   [../]
   [./caps]
     type = SubdomainBoundingBox
     block_id = 3
-    bottom_left = '0 5 0'
-    top_right = '10 10 10'
+    bottom_left = '0 20 0'
+    top_right = '100 50 100'
   [../]
   [./injection_area]
     type = BoundingBoxNodeSet
     new_boundary = 'injection_area'
-    bottom_left = '0 0 5'
-    top_right = '0 5 5'
+    bottom_left = '0 0 50'
+    top_right = '0 20 50'
+  [../]
+  [./extraction_area]
+    type = BoundingBoxNodeSet
+    new_boundary = 'extraction_area'
+    bottom_left = '80 0 50'
+    top_right = '80 20 50'
   [../]
 []
 ### END FROM aquifer_caprock.i #####
@@ -95,9 +101,10 @@
 
 [Variables]
   [./porepressure]
+    initial_condition = 1.0E7
   [../]
   [./temperature]
-    initial_condition = 293
+    initial_condition = 300
     scaling = 1E-8
   [../]
   [./disp_x]
@@ -133,19 +140,30 @@
   [./inlet]
     type = PresetBC
     variable = porepressure
-    value = 1E6
+    value = 1.1E7
     boundary = injection_area # injects just at the screened area
+    # boundary = left #right
+    # boundary = bottom # top #bottom
+    # boundary = back #front
+  [../]
+  [./outlet]
+    type = PresetBC
+    variable = porepressure
+    value = 1.0E7
+    boundary = extraction_area # injects just at the screened area
     # boundary = left #right
     # boundary = bottom # top #bottom
     # boundary = back #front
   [../]
   ### END FROM aquifer_caprock.i #####
   
+
+
   ### Same as 04.i ###
   [./constant_injection_temperature]
     type = PresetBC
     variable = temperature
-    value = 313
+    value = 380
     boundary = injection_area
   [../]
   ### END Same as 04.i ###
@@ -380,8 +398,10 @@
 [Executioner]
   type = Transient
   solve_type = Newton
-  end_time = 1E6
+  end_time = 8.64E6 #100 days of injeciton
   dt = 1E5
+  # end_time = 1E6
+  # dt = 1E5
   nl_abs_tol = 1E-10
 []
 
