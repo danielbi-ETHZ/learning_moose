@@ -124,6 +124,7 @@
     type = PresetBC
     variable = porepressure
     value = 1.0E7
+    # value = 0.0
     boundary = injection_area # injects just at the screened area
     # boundary = left #right
     # boundary = bottom # top #bottom
@@ -133,6 +134,7 @@
     type = PresetBC
     variable = porepressure
     value = 1.0E7
+    # value = 0.0
     boundary = extraction_area # injects just at the screened area
   [../]
   [./constant_injection_temperature]
@@ -141,6 +143,13 @@
     value = 300.
     # value = 300
     boundary = injection_area
+  [../]
+  [./constant_extraction_temperature]
+    type = PresetBC
+    variable = temperature
+    value = 300.
+    # value = 300
+    boundary = extraction_area
   [../]
 []
 
@@ -209,7 +218,7 @@
       type = SimpleFluidProperties
       bulk_modulus = 2.0E9
       viscosity = 1.0E-3
-      density0 = 1056.5406146754945 # 995.012 #density at P = 0, T = 0
+      density0 =1056.5406146754945 # 995.012 #density at P = 0, T = 0
       thermal_expansion = 0.0002 # fluid thermal volumetric expansion coefficient (alpha_f)
       # thermal_expansion = 0.0000
       cp = 4194

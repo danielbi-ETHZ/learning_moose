@@ -1,0 +1,1 @@
+TH_1.i - Confirm that I can make density = 1000 initially even when P and T do not equal 0. Also uses properties.py
