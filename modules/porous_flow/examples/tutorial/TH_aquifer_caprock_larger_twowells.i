@@ -51,13 +51,13 @@
 [Mesh]
   type = GeneratedMesh
   dim = 3
-  nx = 20
+  nx = 10
   xmin = 0
   xmax = 100
   ny = 10
   ymin = 0
   ymax = 50
-  nz = 20
+  nz = 10
   zmin = 0
   zmax = 100
   block_id = '1 3'
@@ -104,18 +104,9 @@
     initial_condition = 1.0E7
   [../]
   [./temperature]
-    initial_condition = 300
+    initial_condition = 0
     scaling = 1E-8
   [../]
-  # [./disp_x]
-  #   scaling = 1E-10
-  # [../]
-  # [./disp_y]
-  #   scaling = 1E-10
-  # [../]
-  # [./disp_z]
-  #   scaling = 1E-10
-  # [../]
 []
 
 [PorousFlowBasicTHM]
@@ -129,14 +120,6 @@
 []
 
 [BCs]
-  # [./constant_injection_porepressure]
-  #   type = PresetBC
-  #   variable = porepressure
-  #   value = 1E6
-  #   boundary = injection_area
-  # [../]
-  
-  ### FROM aquifer_caprock.i #####
   [./inlet]
     type = PresetBC
     variable = porepressure
@@ -151,95 +134,21 @@
     variable = porepressure
     value = 1.0E7
     boundary = extraction_area # injects just at the screened area
-    # boundary = left #right
-    # boundary = bottom # top #bottom
-    # boundary = back #front
   [../]
-  ### END FROM aquifer_caprock.i #####
-  
-
-
-  ### Same as 04.i ###
   [./constant_injection_temperature]
     type = PresetBC
     variable = temperature
-    # value = 380
-    value = 301
+    value = 80
+    # value = 300
     boundary = injection_area
   [../]
-  ### END Same as 04.i ###
-
-  ### Different Roller BCs ###
-  # [./roller_left]
-  #   type = PresetBC
-  #   variable = disp_x
-  #   value = 0
-  #   boundary = left
-  # [../]
-  # [./roller_bottom]
-  #   type = PresetBC
-  #   variable = disp_y
-  #   value = 0
-  #   boundary = bottom
-  # [../]
-  # [./roller_front_back]
-  #   type = PresetBC
-  #   variable = disp_z
-  #   value = 0
-  #   boundary = 'front back'
-  # [../]
-  ### END Different Roller BCs ###
-
-  ### Original (comment out)
-  # [./roller_tmax]
-  #   type = PresetBC
-  #   variable = disp_x
-  #   value = 0
-  #   boundary = tmax
-  # [../]
-  # [./roller_tmin]
-  #   type = PresetBC
-  #   variable = disp_y
-  #   value = 0
-  #   boundary = tmin
-  # [../]
-  # [./roller_top_bottom]
-  #   type = PresetBC
-  #   variable = disp_z
-  #   value = 0
-  #   boundary = 'top bottom'
-  # [../]
-  ### END Original (comment out)
-  # [./cavity_pressure_x]
-  #   type = Pressure
-  #   variable = disp_x
-  #   # boundary = injection_area
-  #   boundary = left
-  #   component = 0
-  #   factor = 1E6
-  #   use_displaced_mesh = false
-  # [../]
-  # [./cavity_pressure_y]
-  #   type = Pressure
-  #   # boundary = injection_area
-  #   boundary = left
-  #   variable = disp_y
-  #   component = 1
-  #   factor = 1E6
-  #   use_displaced_mesh = false
-  # [../]
 []
 
 [AuxVariables]
-  # [./stress_rr]
-  #   family = MONOMIAL
-  #   order = CONSTANT
-  # [../]
-  # [./stress_pp]
-  #   family = MONOMIAL
-  #   order = CONSTANT
-  # [../]
-  ## From aquifer_caprock.i ##
+  [./density_water]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
   [./porosity]
     family = MONOMIAL
     order = CONSTANT
@@ -256,27 +165,16 @@
     family = MONOMIAL
     order = CONSTANT
   [../]
-  ## END From aquifer_caprock.i ##
 []
 
 [AuxKernels]
-  # [./stress_rr]
-  #   type = RankTwoScalarAux
-  #   rank_two_tensor = stress
-  #   variable = stress_rr
-  #   scalar_type = RadialStress
-  #   point1 = '0 0 0'
-  #   point2 = '0 0 1'
-  # [../]
-  # [./stress_pp]
-  #   type = RankTwoScalarAux
-  #   rank_two_tensor = stress
-  #   variable = stress_pp
-  #   scalar_type = HoopStress
-  #   point1 = '0 0 0'
-  #   point2 = '0 0 1'
-  # [../]
-  ## From Aquifer_caprock.i ##
+  [./density_water]
+    type = PorousFlowPropertyAux
+    variable = density_water
+    property = density
+    phase = 0
+    execute_on = timestep_end
+  [../]
   [./porosity]
     type = MaterialRealAux
     property = PorousFlow_porosity_qp
@@ -303,7 +201,6 @@
     row = 0
     variable = permeability_y
   [../]
-  ## END From Aquifer_caprock.i ##
 []
 
 [Modules]
@@ -312,31 +209,33 @@
       type = SimpleFluidProperties
       bulk_modulus = 2E9
       viscosity = 1.0E-3
-      density0 = 1000.0
-      thermal_expansion = 0.0002
+      density0 = 995.012 #density at P = 0, T = 0
+      # thermal_expansion = 0.0002 # fluid thermal volumetric expansion coefficient (alpha_f)
+      # thermal_expansion = 0.0000
       cp = 4194
       cv = 4186
-      porepressure_coefficient = 0
+      porepressure_coefficient = 1.0 # The enhtalpy is internal energy + P/density * porepressure_coefficient
     [../]
   [../]
 []
 
 [Materials]
   [./porosity]
-    # type = PorousFlowPorosityConst # For a constant porosity (i.e. unaffected by strains, temp etc.)
-    # porosity = 0.1                 # The porosity if PorousFlowPorosityConst is used
-    type = PorousFlowPorosity  #if you want porosity to change as a function of mechanical strains, porepressure, temperature, minearl precip
-    porosity_zero = 0.1        #initial porosity if PorousFlowPorosity is used
-    thermal = true
-    fluid = false
-    mechanical = false
-    chemical = false
-    thermal_expansion_coeff = 0.001 
+    type = PorousFlowPorosityConst # For a constant porosity (i.e. unaffected by strains, temp etc.)
+    porosity = 0.1                 # The porosity if PorousFlowPorosityConst is used
+    # type = PorousFlowPorosity  #if you want porosity to change as a function of mechanical strains, porepressure, temperature, minearl precip
+    # porosity_zero = 0.1        #initial porosity if PorousFlowPorosity is used
+    # thermal = true
+    # fluid = false
+    # mechanical = false
+    # chemical = false
+    # thermal_expansion_coeff = 0.001 
   [../]
   [./biot_modulus]
     type = PorousFlowConstantBiotModulus
-    solid_bulk_compliance = 2E-7
-    fluid_bulk_modulus = 1E7
+    solid_bulk_compliance = 2.E-7
+    biot_coefficient = 1.0 # default is 1.0
+    fluid_bulk_modulus = 2.E9
   [../]
   [./permeability_aquifer]
     type = PorousFlowPermeabilityConst
@@ -348,11 +247,12 @@
     block = caps
     permeability = '1E-16 0 0   0 1E-16 0   0 0 1E-16'
   [../]
-
-  [./thermal_expansion]
+  [./thermal_expansion]  ## Required by PorousFlowBasicTHM_MassTimeDerivative
     type = PorousFlowConstantThermalExpansionCoefficient
-    drained_coefficient = 0.003
-    fluid_coefficient = 0.0002
+    drained_coefficient = 0.000 # drained volumetric thermal expansion coefficient (alpha_T)
+    fluid_coefficient = 0.0000  # fluid thermal volumetric expansion coefficient (alpha_f)
+    # drained_coefficient = 0.003
+    # fluid_coefficient = 0.0002   
   [../]
   [./rock_internal_energy]
     type = PorousFlowMatrixInternalEnergy
@@ -364,26 +264,6 @@
     dry_thermal_conductivity = '10 0 0  0 10 0  0 0 10'
     block = 'caps aquifer'
   [../]
-
-  # [./elasticity_tensor]
-  #   type = ComputeIsotropicElasticityTensor
-  #   youngs_modulus = 5E9
-  #   poissons_ratio = 0.0
-  # [../]
-  # [./strain]
-  #   type = ComputeSmallStrain
-  #   eigenstrain_names = thermal_contribution
-  # [../]
-  # [./thermal_contribution]
-  #   type = ComputeThermalExpansionEigenstrain
-  #   temperature = temperature
-  #   thermal_expansion_coeff = 0.001 # this is the linear thermal expansion coefficient
-  #   eigenstrain_name = thermal_contribution
-  #   stress_free_temperature = 293
-  # [../]
-  # [./stress]
-  #   type = ComputeLinearElasticStress
-  # [../]
 []
 
 [Preconditioning]
