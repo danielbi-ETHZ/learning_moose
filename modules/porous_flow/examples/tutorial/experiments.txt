@@ -1,1 +1,12 @@
+To push to my github:
+git push --repo=https://github.com/danielbi-ETHZ/learning_moose.git
+
 TH_1.i - Confirm that I can make density = 1000 initially even when P and T do not equal 0. Also uses properties.py
+TH_2.i - Introduce a higher temperature at the well (w/o injecting). See if there is still a wave in the pressure. Increasing T by 80 C causes density to decrease to ~995, Pressure at the well decreases and it increases adjacent to the well. I'm not sure the exact mechanism, but it dissipates quickly and only reaches ~0.01 MPa
+
+
+Other desired experiemnts:
+* How to inject a flow rate rater than pressure (Type II instead of Type I BC)
+* Porosity changes in TM/THM sims (read through documentation and make examples)
+* Mandel problem
+
