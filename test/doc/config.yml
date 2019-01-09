@@ -1,7 +1,6 @@
 Content:
     - framework/doc/content
     - test/doc/content
-
 Renderer:
     type: MooseDocs.base.MaterializeRenderer
     name: MooseTestApp
@@ -9,8 +8,9 @@ Renderer:
     home: /
 
 Extensions:
-    appsyntax:
-        type: MooseDocs.extensions.appsyntax
+    MooseDocs.extensions.navigation:
+        active: False
+    MooseDocs.extensions.appsyntax:
         executable: ${MOOSE_DIR}/test
         hide:
             framework: !include framework/doc/hidden.yml
@@ -19,9 +19,7 @@ Extensions:
             moose_test: !include test/doc/remove.yml
         includes:
             - framework/include
-    globals:
-        type: MooseDocs.extensions.panoptic
+    MooseDocs.extensions.common:
         shortcuts: !include framework/doc/globals.yml
-    acronyms:
-        type: MooseDocs.extensions.acronym
+    MooseDocs.extensions.acronym:
         acronyms: !include framework/doc/acronyms.yml

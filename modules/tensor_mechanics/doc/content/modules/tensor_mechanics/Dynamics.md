@@ -62,7 +62,7 @@ The degree of damping in the system depends on the coefficients $\zeta$ and $\et
 
 where, $\xi(\omega)$ is the damping ratio of the system as a function of frequency $\omega$. For example, the damping ratio as a function of frequency for $\zeta = 0.0035$ and $\eta = 0.09$ is presented in [fig:rayleigh]. Note that $\omega$ has units of rad/s and $f$ used in the figure has units of Hz.
 
-!media media/tensor_mechanics-rayleigh.png style=width:60%;margin-left:150px;float:center; id=fig:rayleigh caption=Damping ratio as a function of frequency.
+!media media/tensor_mechanics/rayleigh.png style=width:60%;margin-left:150px;float:center; id=fig:rayleigh caption=Damping ratio as a function of frequency.
 
 To model a constant damping ratio using Rayleigh damping, the aim is to find $\zeta$ and $\eta$ such that the $\xi(f)$ is close to the target damping ratio $\xi_t$, which is a constant value, between the frequency range $[f_1, f_2]$. This can be achieved by minimizing the difference between $\xi_t$ and $\xi(f)$ for all the frequencies between $f_1$ and $f_2$, i.e., if
 
@@ -109,10 +109,6 @@ The input file syntax for calculating the residual due to both the Inertial forc
 !listing modules/tensor_mechanics/test/tests/dynamics/rayleigh_damping/rayleigh_hht.i start=Kernels end=AuxKernels
 
 Here, `./DynamicTensorMechanics` is the action that calls the [DynamicStressDivergenceTensors](/DynamicStressDivergenceTensors.md) kernel.
-
-For calculating the time derivative of the stress, we require old and older states of stress, i.e., $\sigma(t)$ and $\sigma(t-\Delta t)$, respectively. These values need to be stored only when the [DynamicStressDivergenceTensors](/DynamicStressDivergenceTensors.md) kernel is used. Therefore, we can request the stress calculator to store the old states of stress through the boolean flag `store_stress_old` when [DynamicStressDivergenceTensors](/DynamicStressDivergenceTensors.md) kernel is used. The input file syntax for setting `store_stress_old` to true is as follows:
-
-!listing modules/tensor_mechanics/test/tests/dynamics/rayleigh_damping/rayleigh_hht.i start=Materials end=Executioner
 
 Finally, when using HHT time integration method, external forces like gravity and pressure also require $\alpha$ as input.
 

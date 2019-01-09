@@ -7,7 +7,7 @@ several key capabilities in the MOOSE framework including:
 
 - Checkpointing -> the ability to terminate an application and restart it where you left off (useful for batch cluster systems).
 - Picard Iteration -> The ability to converge a "tighty" coupled multiApp simulation.
-- Restart -> the ability to save stateful data for a [restart](restart_recover.md) type simulation when using checkpoint format
+- Restart -> the ability to save stateful data for a [restart](restart_recover.md optional=True) type simulation when using checkpoint format
 
 ## What is stateful data?
 
@@ -24,10 +24,10 @@ Here are a couple of examples to consider before defining a dataLoad/dataStore r
 - If your object has a simple Boolean used to indicate whether or not you have calculated some quantity before, that you set
   when you run some routine. Your object +does+ contain stateful information since the state of that value depends on internal
   logic in your object. For this scenario, you will need to ask Moose to store your Boolean as "restartableData". See
-  [declareRestartableData].
+  [#declareRestartableData].
 - If your object contains a dataStructure of some custom type that you produce internally and retrieve existing values from
   over the coarse of the simulation, you have a stateful data and may need to define the dataLoad and dataStore functions
-  in your object. See [declareRestartableData](#declareRestartableData), and [dataStore/dataLoad](#dataStore_dataLoad).
+  in your object. See [#declareRestartableData], and [#dataStore_dataLoad].
 
 
 ## declareRestartableData id=declareRestartableData

@@ -15,7 +15,9 @@
 // Forward Declarations
 class GlobalDisplacementAux;
 class GlobalStrainUserObjectInterface;
-class RankTwoTensor;
+template <typename>
+class RankTwoTensorTempl;
+typedef RankTwoTensorTempl<Real> RankTwoTensor;
 
 template <>
 InputParameters validParams<GlobalDisplacementAux>();
@@ -35,6 +37,7 @@ protected:
 
   const GlobalStrainUserObjectInterface & _pst;
   const VectorValue<bool> & _periodic_dir;
+  const Point _ref_point;
 
   const unsigned int _dim;
   const unsigned int _ndisp;

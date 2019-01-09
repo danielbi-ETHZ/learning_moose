@@ -317,7 +317,7 @@ camelCaseToUnderscore(const std::string & camel_case_name)
 {
   string replaced = camel_case_name;
   // Put underscores in front of each contiguous set of capital letters
-  pcrecpp::RE("(?!^)(?<![A-Z])([A-Z]+)").GlobalReplace("_\\1", &replaced);
+  pcrecpp::RE("(?!^)(?<![A-Z_])([A-Z]+)").GlobalReplace("_\\1", &replaced);
 
   // Convert all capital letters to lower case
   std::transform(replaced.begin(), replaced.end(), replaced.begin(), ::tolower);
@@ -384,12 +384,6 @@ hostname()
 }
 
 bool
-absoluteFuzzyEqual(const Real & var1, const Real & var2, const Real & tol)
-{
-  return (std::abs(var1 - var2) <= tol);
-}
-
-bool
 absoluteFuzzyGreaterEqual(const Real & var1, const Real & var2, const Real & tol)
 {
   return (var1 >= (var2 - tol));
@@ -411,12 +405,6 @@ bool
 absoluteFuzzyLessThan(const Real & var1, const Real & var2, const Real & tol)
 {
   return (var1 < (var2 - tol));
-}
-
-bool
-relativeFuzzyEqual(const Real & var1, const Real & var2, const Real & tol)
-{
-  return (absoluteFuzzyEqual(var1, var2, tol * (std::abs(var1) + std::abs(var2))));
 }
 
 bool

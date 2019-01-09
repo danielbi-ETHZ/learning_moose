@@ -1,3 +1,12 @@
+#* This file is part of the MOOSE framework
+#* https://www.mooseframework.org
+#*
+#* All rights reserved, see COPYRIGHT for full restrictions
+#* https://github.com/idaholab/moose/blob/master/COPYRIGHT
+#*
+#* Licensed under LGPL 2.1, please see LICENSE for details
+#* https://www.gnu.org/licenses/lgpl-2.1.html
+
 """Wrapper for hit parser."""
 import os
 import hit
@@ -42,12 +51,6 @@ class HitNode(NodeMixin):
         self.parent = parent         # anytree.Node property
         self.__hitnode = hitnode     # hit.Node object
 
-    @property
-    def line(self):
-        """
-        Access to the line number.
-        """
-        return self.__hitnode.line()
 
     @property
     def fullpath(self):
@@ -141,6 +144,23 @@ class HitNode(NodeMixin):
         if value is None:
             return default
         return value
+
+    def line(self, name=None, default=None):
+        """
+        Return the line number for node or for the supplied parameter name.
+
+        Inputs:
+            name[str]: (Optional) The name of a parameter, if not given the node line is returned.
+            default: (Optional) The default value to return if the parameter name is not found.
+        """
+        if name is None:
+            return self.__hitnode.line()
+
+        for child in self.__hitnode.children(hit.NodeType.Field):
+            if child.path() == name:
+                return child.line()
+
+        return default
 
     def __getitem__(self, name):
         """

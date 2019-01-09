@@ -166,6 +166,9 @@ framework/contrib/asio/
 *.cpa-*
 *.cpr-*
 
+# Ignore petsc arch
+petsc/arch-*/*
+
 # phase_field/tests/solution_rasterizer
 out.xyz
 
@@ -194,10 +197,9 @@ python/MooseDocs/test/output
 !**/doc/content/**/*.bib
 !**/doc/content/**/*.woff
 !**/doc/content/**/*.woff2
-!python/MooseDocs/test/gold/json/*.json
-!python/MooseDocs/test/gold/materialize/*.html
-!python/MooseDocs/test/gold/html/*.html
-!python/MooseDocs/test/gold/latex/*.tex
+!python/MooseDocs/test/gold/**/*.json
+!python/MooseDocs/test/gold/**/*.html
+!python/MooseDocs/test/gold/**/*.tex
 
 # Chigger
 !python/chigger/tests/**/gold/*.png
