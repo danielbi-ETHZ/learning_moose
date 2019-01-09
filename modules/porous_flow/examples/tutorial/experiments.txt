@@ -3,6 +3,9 @@ git push --repo=https://github.com/danielbi-ETHZ/learning_moose.git
 
 TH_1.i - Confirm that I can make density = 1000 initially even when P and T do not equal 0. Also uses properties.py
 TH_2.i - Introduce a higher temperature at the well (w/o injecting). See if there is still a wave in the pressure. Increasing T by 80 C causes density to decrease to ~995, Pressure at the well decreases and it increases adjacent to the well. I'm not sure the exact mechanism, but it dissipates quickly and only reaches ~0.01 MPa
+TH_3.i - change BC to be a sepecified flux (only at injeciton location). It works for left boundary, but not for a well. There are also problems with pressure dropping below its initial value. Try with a H only example.
+H_4.i - experiment with BC from TH_3.i. For the H version only, it should be clear if BC is causing well to drop below initial value.
+
 
 
 Other desired experiemnts:
