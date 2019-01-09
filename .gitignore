@@ -217,3 +217,7 @@ python/peacock/tests/postprocessor_tab/TestPostprocessorPluginManager_test_scrip
 !python/peacock/tests/**/input/*.*
 peacock_tmp_diff.exo
 *.e.diff
+
+# Dannys directory of learning PorousFlow module
+**/porous_flow/examples/tutorial/*.jpeg
+

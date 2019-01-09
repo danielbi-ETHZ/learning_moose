@@ -103,20 +103,20 @@
   [./porepressure]
     initial_condition = 1.0E7
   [../]
-  # [./temperature]
-  #   initial_condition = 300.
-  #   scaling = 1E-8
-  # [../]
+  [./temperature]
+    initial_condition = 300.
+    scaling = 1E-8
+  [../]
 []
 
 [PorousFlowBasicTHM]
   porepressure = porepressure
   temperature = temperature
-  coupling_type = Hydro
+  coupling_type = ThermoHydro
   gravity = '0 0 0'
   fp = the_simple_fluid
-  # thermal_eigenstrain_name = thermal_contribution
-  # use_displaced_mesh = false
+  thermal_eigenstrain_name = thermal_contribution
+  use_displaced_mesh = false
 []
 
 [BCs]
